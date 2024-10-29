@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑人员信息</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">编辑人员信息</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{{ url_for('update_person', id=person.id) }}">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">姓名:</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ person.name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="birth_date" class="form-label">出生日期:</label>
+                                <input type="date" class="form-control" id="birth_date" name="birth_date" 
+                                       value="{{ person.birth_date.strftime('%Y-%m-%d') }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="gender" class="form-label">性别:</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="男" {% if person.gender == '男' %}selected{% endif %}>男</option>
+                                    <option value="女" {% if person.gender == '女' %}selected{% endif %}>女</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">经历:</label>
+                                <div id="experiences">
+                                    {% for exp in person.experiences %}
+                                    <div class="experience-container mb-2">
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">时间段</span>
+                                            <input type="date" class="form-control" name="experience_start[]" 
+                                                   value="{{ exp.start_date.strftime('%Y-%m-%d') }}" required>
+                                            <span class="input-group-text">至</span>
+                                            <input type="date" class="form-control" name="experience_end[]"
+                                                   value="{{ exp.end_date.strftime('%Y-%m-%d') if exp.end_date else '' }}">
+                                            <button type="button" class="btn btn-danger" onclick="this.closest('.experience-container').remove()">
+                                                删除
+                                            </button>
+                                        </div>
+                                        <div class="input-group">
+                                            <textarea class="form-control" name="experiences[]" rows="3" required>{{ exp.description }}</textarea>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% if not person.experiences %}
+                                    <div class="experience-container mb-2">
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">时间段</span>
+                                            <input type="date" class="form-control" name="experience_start[]" required>
+                                            <span class="input-group-text">至</span>
+                                            <input type="date" class="form-control" name="experience_end[]">
+                                        </div>
+                                        <div class="input-group">
+                                            <textarea class="form-control" name="experiences[]" rows="3" placeholder="经历描述" required></textarea>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <button type="button" class="btn btn-secondary mt-2" onclick="addExperience()">
+                                    添加更多经历
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ url_for('home') }}" class="btn btn-secondary">返回</a>
+                                <button type="submit" class="btn btn-primary">保存更改</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addExperience() {
+            const container = document.createElement('div');
+            container.className = 'experience-container mb-2';
+            container.innerHTML = `
+                <div class="input-group mb-2">
+                    <span class="input-group-text">时间段</span>
+                    <input type="date" class="form-control" name="experience_start[]" required>
+                    <span class="input-group-text">至</span>
+                    <input type="date" class="form-control" name="experience_end[]">
+                    <button type="button" class="btn btn-danger" onclick="this.closest('.experience-container').remove()">
+                        删除
+                    </button>
+                </div>
+                <div class="input-group">
+                    <textarea class="form-control" name="experiences[]" rows="3" placeholder="经历描述" required></textarea>
+                </div>
+            `;
+            document.getElementById('experiences').appendChild(container);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
