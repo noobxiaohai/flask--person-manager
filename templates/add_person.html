@@ -37,12 +37,12 @@
                                     <div class="experience-container mb-2">
                                         <div class="input-group mb-2">
                                             <span class="input-group-text">时间段</span>
-                                            <input type="date" class="form-control" name="experience_start[]" required>
+                                            <input type="date" class="form-control" name="experience_start[]">
                                             <span class="input-group-text">至</span>
                                             <input type="date" class="form-control" name="experience_end[]">
                                         </div>
                                         <div class="input-group">
-                                            <textarea class="form-control" name="experiences[]" rows="3" placeholder="经历描述" required></textarea>
+                                            <textarea class="form-control" name="experiences[]" rows="3" placeholder="经历描述"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -68,7 +68,7 @@
             container.innerHTML = `
                 <div class="input-group mb-2">
                     <span class="input-group-text">时间段</span>
-                    <input type="date" class="form-control" name="experience_start[]" required>
+                    <input type="date" class="form-control" name="experience_start[]">
                     <span class="input-group-text">至</span>
                     <input type="date" class="form-control" name="experience_end[]">
                     <button type="button" class="btn btn-danger" onclick="this.closest('.experience-container').remove()">
@@ -76,7 +76,7 @@
                     </button>
                 </div>
                 <div class="input-group">
-                    <textarea class="form-control" name="experiences[]" rows="3" placeholder="经历描述" required></textarea>
+                    <textarea class="form-control" name="experiences[]" rows="3" placeholder="经历描述"></textarea>
                 </div>
             `;
             document.getElementById('experiences').appendChild(container);
